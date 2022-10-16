@@ -1,7 +1,7 @@
 
 //第一个shader：模拟非金属PBR
 
-Shader "Summon/SumLit"
+Shader "Summon/SumPBRTur"
 {
     Properties
     {
@@ -31,7 +31,7 @@ Shader "Summon/SumLit"
             #pragma vertex vert
             #pragma fragment frag
 
-            #include "./../ShaderLibrary/SumCore.hlsl"
+            #include "./../../_ShaderLibrary/SumCore.hlsl"
             
             //变量
             CBUFFER_START(UnityPerMaterial)
@@ -142,9 +142,13 @@ Shader "Summon/SumLit"
                 // return half4(directColor + indirectColor + indirectSpec, 1);
                 // return half4(directColor + indirectColor, 1);
 
-                return half4(directColor, 1);
+                // return half4(directColor, 1);
                 // return half4(indirectColor, 1);
                 // return half4(indirectSpec, 1);
+
+                half4 encodedIrradiance = half4(SAMPLE_TEXTURECUBE(unity_SpecCube0, samplerunity_SpecCube0, normalWS));
+                return encodedIrradiance;
+                // return half4(unity_SpecCube0.rgb, 1.0);
             }
             ENDHLSL
         }
@@ -170,3 +174,31 @@ Shader "Summon/SumLit"
                 // half3 color = dirLit + ambient;
                 // half4 finalColor = half4(color, 1.0);
                 // return finalColor;
+
+//有关环境反射的计算
+// #if !defined(_ENVIRONMENTREFLECTIONS_OFF)
+
+//     half3 irradiance;
+
+//     #ifdef _REFLECTION_PROBE_BLENDING
+//         irradiance = CalculateIrradianceFromReflectionProbes(reflectVector, positionWS, perceptualRoughness);
+//     #else
+//         #ifdef _REFLECTION_PROBE_BOX_PROJECTION
+//             reflectVector = BoxProjectedCubemapDirection(reflectVector, positionWS, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
+//         #endif // _REFLECTION_PROBE_BOX_PROJECTION
+
+//         half mip = PerceptualRoughnessToMipmapLevel(perceptualRoughness);
+//         half4 encodedIrradiance = half4(SAMPLE_TEXTURECUBE_LOD(unity_SpecCube0, samplerunity_SpecCube0, reflectVector, mip));
+
+//         #if defined(UNITY_USE_NATIVE_HDR)
+//             irradiance = encodedIrradiance.rgb;
+//         #else
+//             irradiance = DecodeHDREnvironment(encodedIrradiance, unity_SpecCube0_HDR);
+//         #endif // UNITY_USE_NATIVE_HDR
+//     #endif // _REFLECTION_PROBE_BLENDING
+
+//     return irradiance * occlusion;
+
+// #else
+//         return _GlossyEnvironmentColor.rgb * occlusion;
+// #endif // _ENVIRONMENTREFLECTIONS_OFF

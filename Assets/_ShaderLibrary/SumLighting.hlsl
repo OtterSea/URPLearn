@@ -4,10 +4,6 @@
 #ifndef SUMMON_SHADER_SUM_LIGHTING
 #define SUMMON_SHADER_SUM_LIGHTING
 
-// 获得视线WS：
-// output.viewDirWS = GetWorldSpaceNormalizeViewDir(output.positionWS.xyz);
-
-
 
 //半兰伯特光照
 half4 SumHalfLambert(half3 color, float3 lightDir, float3 normal)
@@ -23,7 +19,6 @@ half4 SumLambert(half3 color, float3 lightDir, float3 normal)
     return half4(color * lambert, 1);
 }
 
-//这个函数没写好 连blinnphone都没弄好
 //尝试计算PBR的镜面反射颜色
 half4 SumPBRReflectColor(half3 color, float3 viewDir, float3 lightDir, float3 normal)
 {

@@ -2,6 +2,8 @@
 #ifndef SUMMON_SHADER_SUM_NORMAL
 #define SUMMON_SHADER_SUM_NORMAL
 
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
 //生成TBN矩阵
 half3x3 SumGetTBN(float3 tangentWS, float3 bitangentWS, float3 normalWS)
 {

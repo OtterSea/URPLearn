@@ -40,13 +40,22 @@
 //     float4 positionHCS : SV_POSITION;
 
 //     float3 normalWS : TEXCOORD0;
-//     float4 tangentWS : TEXCOORD1;
+//     float3 tangentWS : TEXCOORD1;
 //     float3 bitangentWS : TEXCOORD2;
 
 //     float3 positionWS : TEXCOORD3;
 
-//     float2 uv : TEXCOORD3;
+//     float2 uv : TEXCOORD4;
 // };
+
+// 其他提示
+
+// 获得视线WS：
+// output.viewDirWS = GetWorldSpaceNormalizeViewDir(output.positionWS.xyz);
+
+// output.positionHCS = TransformObjectToHClip(input.positionOS.xyz);
+// output.uv = TRANSFORM_TEX(input.uv, _BaseTex);
+// output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
 
 
 #endif
